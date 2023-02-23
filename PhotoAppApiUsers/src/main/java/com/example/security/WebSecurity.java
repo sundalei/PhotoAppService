@@ -25,16 +25,16 @@ import com.example.service.UsersService;
 @EnableWebSecurity
 public class WebSecurity extends AbstractHttpConfigurer<WebSecurity, HttpSecurity> {
 
-	private static Environment environment;
+	private final Environment environment;
 
-	private static UsersService userService;
+	private final UsersService userService;
 
-	private static BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public WebSecurity(Environment environment, UsersService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-		WebSecurity.environment = environment;
-		WebSecurity.userService = userService;
-		WebSecurity.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.environment = environment;
+		this.userService = userService;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class WebSecurity extends AbstractHttpConfigurer<WebSecurity, HttpSecurit
 				UsernamePasswordAuthenticationFilter.class);
 	}
 
-	public static WebSecurity webSecurity() {
+	public WebSecurity webSecurity() {
 		return new WebSecurity(environment, userService, bCryptPasswordEncoder);
 	}
 
@@ -52,10 +52,13 @@ public class WebSecurity extends AbstractHttpConfigurer<WebSecurity, HttpSecurit
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((authorizeHttpRequests) -> {
-			authorizeHttpRequests.requestMatchers(HttpMethod.POST, "/users")
-					.access(new WebExpressionAuthorizationManager(
-							"hasIpAddress('" + environment.getProperty("gateway.ip") + "')"))
-					.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll();
+//			authorizeHttpRequests.requestMatchers("/users/**")
+//					.access(new WebExpressionAuthorizationManager(
+//							"hasIpAddress('" + environment.getProperty("gateway.ip") + "')"))
+//					.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll();
+			
+		    authorizeHttpRequests.requestMatchers("/users/**").permitAll()
+			.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll();
 		});
 
 		http.apply(webSecurity());

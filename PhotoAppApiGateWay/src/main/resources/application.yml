@@ -10,18 +10,53 @@ spring:
         - id: users-status-check
           uri: lb://users-ws
           predicates:
-            - Path=/users/status/check
+            - Path=/users-ws/users/status/check
             - Method=GET
+            - Header=Authorization, Bearer(.*)
           filters:
             - RemoveRequestHeader=Cookie
-#            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
 
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+        - id: users-ws
+          uri: lb://users-ws
+          predicates:
+            - Path=/users-ws/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+
+        - id: users-ws-login
+          uri: lb://users-ws
+          predicates:
+            - Path=/users-ws/users/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+
+        - id: users-ws-get-update-delete
+          uri: lb://users-ws
+          predicates:
+            - Path=/users-ws/users/**
+            - Method=GET,PUT,DELETE
+            - Header=Authorization, Bearer(.*)
+          filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+
+#      discovery:
+#        locator:
+#          enabled: true
+#          lower-case-service-id: true
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8010/eureka
+      
+token:
+  secret: '5267556B58703273357538782F413F4428472B4B6250655368566D5971337436773979244226452948404D635166546A576E5A7234753778214125432A462D4A'
+  
