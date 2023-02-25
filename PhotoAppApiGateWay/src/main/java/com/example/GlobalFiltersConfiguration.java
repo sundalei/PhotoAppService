@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import reactor.core.publisher.Mono;
 
@@ -13,6 +14,7 @@ public class GlobalFiltersConfiguration {
 	
 	private static Logger LOG = LoggerFactory.getLogger(GlobalFiltersConfiguration.class);
 	
+	@Order(1)
 	@Bean
 	GlobalFilter secondPreFilter() {
 		
@@ -22,11 +24,12 @@ public class GlobalFiltersConfiguration {
 			 
 			return chain.filter(exchange).then(Mono.fromRunnable(() -> {
 				
-				LOG.info("My second global post-filter is executed...");
+				LOG.info("My third global post-filter is executed...");
 			}));
 		};
 	}
 	
+	@Order(2)
 	@Bean
 	GlobalFilter thirdPreFilter() {
 		
@@ -36,11 +39,12 @@ public class GlobalFiltersConfiguration {
 			 
 			return chain.filter(exchange).then(Mono.fromRunnable(() -> {
 				
-				LOG.info("My third global post-filter is executed...");
+				LOG.info("My second global post-filter is executed...");
 			}));
 		};
 	}
 	
+	@Order(3)
 	@Bean
 	GlobalFilter fourthPreFilter() {
 		
@@ -50,7 +54,7 @@ public class GlobalFiltersConfiguration {
 			 
 			return chain.filter(exchange).then(Mono.fromRunnable(() -> {
 				
-				LOG.info("My fourth global post-filter is executed...");
+				LOG.info("My first global post-filter is executed...");
 			}));
 		};
 	}
