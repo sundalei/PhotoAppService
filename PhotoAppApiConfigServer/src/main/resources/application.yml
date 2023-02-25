@@ -1,0 +1,21 @@
+server:
+  port: 8012
+
+spring:
+  application:
+    name: configserver
+    
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://sundalei@bitbucket.org/sundalei/photoappserverconfig.git
+          username: sundalei
+          password: ATBBmM92pXgMjdG2ZKnB3NTAUDqY89F7E774
+          clone-on-start: true
+          default-label: main
+          
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8010/eureka

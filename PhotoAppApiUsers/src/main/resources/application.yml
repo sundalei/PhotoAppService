@@ -14,6 +14,10 @@ spring:
         web-allow-others: true
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    
+  config:
+    import:
+    - optional:configserver:http://localhost:8012
 
 eureka:
   client:
@@ -22,13 +26,13 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
-gateway:
-  ip: 192.168.10.104
-  
-token:
-  expiration_time: 864000000
-  secret: '5267556B58703273357538782F413F4428472B4B6250655368566D5971337436773979244226452948404D635166546A576E5A7234753778214125432A462D4A'
-  
-login:
-  url:
-    path: '/users/login'
+#gateway:
+#  ip: 192.168.10.104
+#  
+#token:
+#  expiration_time: 864000000
+#  secret: '5267556B58703273357538782F413F4428472B4B6250655368566D5971337436773979244226452948404D635166546A576E5A7234753778214125432A462D4A'
+#  
+#login:
+#  url:
+#    path: '/users/login'

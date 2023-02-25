@@ -52,6 +52,10 @@ spring:
 #          enabled: true
 #          lower-case-service-id: true
 
+  config:
+    import:
+    - optional:configserver:http://localhost:8012
+
 eureka:
   client:
     serviceUrl:
