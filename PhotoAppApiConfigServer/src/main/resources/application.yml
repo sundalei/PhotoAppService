@@ -15,7 +15,23 @@ spring:
           clone-on-start: true
           default-label: main
           
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+          
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8010/eureka
+      
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - beans
+        - info
+        - env
+        - busrefresh
