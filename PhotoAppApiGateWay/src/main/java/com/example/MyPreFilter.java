@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -17,11 +18,18 @@ import reactor.core.publisher.Mono;
 public class MyPreFilter implements GlobalFilter, Ordered {
 
     private static final Logger LOG = LoggerFactory.getLogger(MyPreFilter.class);
+    
+    private final Environment env;
 
-    @Override
+	public MyPreFilter(Environment env) {
+		this.env = env;
+	}
+
+	@Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
         LOG.info("My first Pre-filter is executed...");
+        LOG.info("Token: " + env.getProperty("token.secret"));
         
         String requestPath = exchange.getRequest().getPath().toString();
         LOG.info("Request path = " + requestPath);
