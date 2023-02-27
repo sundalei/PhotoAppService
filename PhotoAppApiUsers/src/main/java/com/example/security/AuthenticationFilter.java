@@ -33,9 +33,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 	
-	private UsersService usersService;
+	private final UsersService usersService;
 	
-	private Environment environment;
+	private final Environment environment;
 
 	public AuthenticationFilter(UsersService usersService, Environment environment, AuthenticationManager authenticationManager) {
 		this.usersService = usersService;

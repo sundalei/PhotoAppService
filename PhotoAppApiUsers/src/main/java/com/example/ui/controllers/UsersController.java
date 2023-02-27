@@ -2,9 +2,6 @@ package com.example.ui.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +20,8 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
-@RefreshScope
 public class UsersController {
 	
-	private static Logger LOG = LoggerFactory.getLogger(UsersController.class);
 
     private final Environment env;
     private final UsersService usersService;
@@ -38,9 +33,7 @@ public class UsersController {
     
     @GetMapping("/status/check")
     public String status() {
-    	
-    	LOG.info("Working on port " + env.getProperty("local.server.port") + ", with token = " + env.getProperty("token.secret"));
-    	
+    	    	
         return "Working on port " + env.getProperty("local.server.port") + ", with ip = " + env.getProperty("gateway.ip");
     }
 

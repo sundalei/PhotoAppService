@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,9 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.example.service.UsersService;
 
@@ -52,13 +49,7 @@ public class WebSecurity extends AbstractHttpConfigurer<WebSecurity, HttpSecurit
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((authorizeHttpRequests) -> {
-//			authorizeHttpRequests.requestMatchers("/users/**")
-//					.access(new WebExpressionAuthorizationManager(
-//							"hasIpAddress('" + environment.getProperty("gateway.ip") + "')"))
-//					.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll();
-			
-		    authorizeHttpRequests.requestMatchers("/users/**").permitAll()
-			.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll();
+		    authorizeHttpRequests.requestMatchers("/users/**", "/actuator/**", "/h2-console/**").permitAll();
 		});
 
 		http.apply(webSecurity());
