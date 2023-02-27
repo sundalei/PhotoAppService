@@ -47,14 +47,8 @@ spring:
             - AuthorizationHeaderFilter
             - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
 
-#      discovery:
-#        locator:
-#          enabled: true
-#          lower-case-service-id: true
-
   config:
-    import:
-    - optional:configserver:http://localhost:8012
+    import: optional:configserver:http://localhost:8012
     
   rabbitmq:
     host: localhost
