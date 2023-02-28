@@ -18,6 +18,17 @@ spring:
             - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
+        - id: users-actuator
+          uri: lb://users-ws
+          predicates:
+            - Path=/users-ws/actuator/**
+            - Method=GET
+            - Header=Authorization, Bearer(.*)
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users-ws/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
         - id: users-ws
           uri: lb://users-ws
           predicates:
@@ -62,8 +73,15 @@ eureka:
       defaultZone: http://localhost:8010/eureka
 
 management:
+  endpoint:
+    gateway:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: '*'
+        include:
+          - beans
+          - health
+          - gateway
+          - httpexchanges
   
