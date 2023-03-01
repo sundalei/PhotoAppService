@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.AntPathMatcher;
 
 import com.example.service.UsersService;
 
@@ -49,7 +51,8 @@ public class WebSecurity extends AbstractHttpConfigurer<WebSecurity, HttpSecurit
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((authorizeHttpRequests) -> {
-		    authorizeHttpRequests.requestMatchers("/users/**", "/actuator/**", "/h2-console/**").permitAll();
+		    authorizeHttpRequests.requestMatchers("/users/**", "/actuator/**").permitAll();
+		    authorizeHttpRequests.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll();
 		});
 
 		http.apply(webSecurity());
