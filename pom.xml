@@ -13,6 +13,7 @@
         <module>PhotoAppApiUsers</module>
         <module>PhotoAppApiGateWay</module>
         <module>PhotoAppApiConfigServer</module>
+        <module>PhotoAppApiAlbums</module>
     </modules>
 
     <name>PhotoAppService</name>
