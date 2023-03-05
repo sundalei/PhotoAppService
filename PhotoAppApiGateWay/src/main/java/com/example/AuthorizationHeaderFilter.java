@@ -1,6 +1,7 @@
 package com.example;
 
 import java.security.Key;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,25 +45,25 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 			
 			if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
 				// Unauthorised
-				return onError(exchange, "No authorization header", HttpStatus.UNAUTHORIZED);
+				return onError(exchange);
 			}
 			
-			String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+			String authorizationHeader = Objects.requireNonNull(request.getHeaders().get(HttpHeaders.AUTHORIZATION)).get(0);
 			String jwt = authorizationHeader.replace("Bearer", "");
 			
 			LOG.info("jwt token {}, start with blank? {}", jwt, jwt.startsWith(" "));
 			
 			if (!isJwtValid(jwt)) {
-				return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
+				return onError(exchange);
 			}
 			
 			return chain.filter(exchange);
 		};
 	}
 	
-	private Mono<Void> onError(ServerWebExchange exchange, String error, HttpStatus httpStatus) {
+	private Mono<Void> onError(ServerWebExchange exchange) {
 		ServerHttpResponse response = exchange.getResponse();
-		response.setStatusCode(httpStatus);
+		response.setStatusCode(HttpStatus.UNAUTHORIZED);
 		
 		return response.setComplete();
 	}
