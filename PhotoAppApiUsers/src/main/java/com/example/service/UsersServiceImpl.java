@@ -1,22 +1,22 @@
 package com.example.service;
 
-import com.example.data.AlbumsServiceClient;
-import com.example.data.UserEntity;
-import com.example.data.UsersRepository;
-import com.example.shared.UserDto;
-import com.example.ui.model.AlbumResponseModel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.example.data.AlbumsServiceClient;
+import com.example.data.UserEntity;
+import com.example.data.UsersRepository;
+import com.example.shared.UserDto;
+import com.example.ui.model.AlbumResponseModel;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -26,16 +26,12 @@ public class UsersServiceImpl implements UsersService {
 
 	private final AlbumsServiceClient albumsServiceClient;
 
-	private final Environment environment;
-
 	public UsersServiceImpl(UsersRepository usersRepository,
 							BCryptPasswordEncoder bCryptPasswordEncoder,
-							AlbumsServiceClient albumsServiceClient,
-							Environment environment) {
+							AlbumsServiceClient albumsServiceClient) {
 		this.usersRepository = usersRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.albumsServiceClient = albumsServiceClient;
-		this.environment = environment;
 	}
 
 	@Override
@@ -92,6 +88,12 @@ public class UsersServiceImpl implements UsersService {
 		UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
 		List<AlbumResponseModel> albums = albumsServiceClient.getAlbums(userId);
+		
+//		try {
+//			albums = albumsServiceClient.getAlbums(userId);
+//		} catch (FeignException e) {
+//			LOG.error(e.getLocalizedMessage());
+//		}
 		
 		userDto.setAlbums(albums);
 		
