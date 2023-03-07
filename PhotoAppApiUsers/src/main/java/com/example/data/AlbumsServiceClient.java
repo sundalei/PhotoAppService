@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.example.ui.model.AlbumResponseModel;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 
 @FeignClient(name = "albums-ws")
 public interface AlbumsServiceClient {
@@ -18,6 +19,7 @@ public interface AlbumsServiceClient {
 	public static final Logger LOG = LoggerFactory.getLogger(AlbumsServiceClient.class);
     
     @GetMapping("/users/{id}/albums")
+    @Retry(name = "albums-ws")
     @CircuitBreaker(name = "albums-ws", fallbackMethod = "getAlbumsFallback")
     List<AlbumResponseModel> getAlbums(@PathVariable("id") String id);
 
