@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -48,9 +49,12 @@ public class WebSecurity extends AbstractHttpConfigurer<WebSecurity, HttpSecurit
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests((authorizeHttpRequests) -> {
-		    authorizeHttpRequests.requestMatchers("/users/**", "/actuator/**").permitAll();
-		    authorizeHttpRequests.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll();
+		http.csrf(csrf -> csrf.disable())
+		    .authorizeHttpRequests((authorizeHttpRequests) -> {
+		    	authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/actuator/health").permitAll();
+		    	authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/actuator/circuitbreakerevents").permitAll();
+		        authorizeHttpRequests.requestMatchers("/users/**").permitAll();
+		        authorizeHttpRequests.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll();
 		});
 
 		http.apply(webSecurity());
