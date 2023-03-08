@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +22,8 @@ import com.example.ui.model.AlbumResponseModel;
 
 @Service
 public class UsersServiceImpl implements UsersService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(UsersServiceImpl.class);
 
 	private final UsersRepository usersRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -87,13 +91,9 @@ public class UsersServiceImpl implements UsersService {
 		
 		UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
+		LOG.info("Before calling albums Microservice");
 		List<AlbumResponseModel> albums = albumsServiceClient.getAlbums(userId);
-		
-//		try {
-//			albums = albumsServiceClient.getAlbums(userId);
-//		} catch (FeignException e) {
-//			LOG.error(e.getLocalizedMessage());
-//		}
+		LOG.info("After calling albums Microservice");
 		
 		userDto.setAlbums(albums);
 		
