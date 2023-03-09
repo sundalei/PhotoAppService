@@ -1,11 +1,9 @@
 package com.example.security;
 
-import com.example.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.example.service.UsersService;
 
 @Configuration
 @EnableWebSecurity
@@ -51,8 +51,9 @@ public class WebSecurity extends AbstractHttpConfigurer<WebSecurity, HttpSecurit
 
 		http.csrf(csrf -> csrf.disable())
 		    .authorizeHttpRequests((authorizeHttpRequests) -> {
-		    	authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/actuator/health").permitAll();
-		    	authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/actuator/circuitbreakerevents").permitAll();
+//		    	authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/actuator/health").permitAll();
+//		    	authorizeHttpRequests.requestMatchers(HttpMethod.GET, "/actuator/circuitbreakerevents").permitAll();
+		    	authorizeHttpRequests.requestMatchers("/actuator/**").permitAll();
 		        authorizeHttpRequests.requestMatchers("/users/**").permitAll();
 		        authorizeHttpRequests.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll();
 		});
