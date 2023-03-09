@@ -9,3 +9,4 @@ HELP.md
 .DS_Store
 *.log
 *.gz
+*.iml
