@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>PhotoAppService</artifactId>
+    <artifactId>photoapp-service</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
@@ -16,7 +16,7 @@
         <module>PhotoAppApiAlbums</module>
     </modules>
 
-    <name>PhotoAppService</name>
+    <name>photoapp-service</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,6 +25,7 @@
         <spring.boot.maven.plugin.version>3.0.4</spring.boot.maven.plugin.version>
         <spring.boot.dependencies.version>3.0.4</spring.boot.dependencies.version>
         <spring.cloud-version>2022.0.1</spring.cloud-version>
+        <image>sundalei/${project.artifactId}:${project.version}</image>
     </properties>
 
     <dependencyManagement>
@@ -65,6 +66,37 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring.boot.maven.plugin.version}</version>
                 </plugin>
+                <plugin>
+					<groupId>com.google.cloud.tools</groupId>
+					<artifactId>jib-maven-plugin</artifactId>
+					<version>3.3.1</version>
+					<configuration>
+						<from>
+							<image>eclipse-temurin:17</image>
+							<platforms>
+								<platform>
+									<architecture>arm64</architecture>
+									<os>linux</os>
+								</platform>
+								<platform>
+									<architecture>amd64</architecture>
+									<os>linux</os>
+								</platform>
+							</platforms>
+						</from>
+						<to>
+							<tags>latest</tags>
+						</to>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>build</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
             </plugins>
         </pluginManagement>
         <plugins>

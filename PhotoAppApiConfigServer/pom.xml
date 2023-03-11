@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.example</groupId>
-		<artifactId>PhotoAppService</artifactId>
+		<artifactId>photoapp-service</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>PhotoAppApiConfigServer</artifactId>
-	<name>PhotoAppApiConfigServer</name>
+	<artifactId>photoapp-api-configserver</artifactId>
+	<name>photoapp-api-configserver</name>
 	<description>Demo project for Spring Boot</description>
 
 	<dependencies>
@@ -43,5 +43,19 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+        <profile>
+            <id>build-docker-image</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

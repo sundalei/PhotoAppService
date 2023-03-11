@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.example</groupId>
-		<artifactId>PhotoAppService</artifactId>
+		<artifactId>photoapp-service</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>PhotoAppApiUsers</artifactId>
-	<name>PhotoAppApiUsers</name>
+	<artifactId>photoapp-api-users</artifactId>
+	<name>photoapp-api-users</name>
 	<description>Demo project for Spring Boot</description>
 
 	<dependencies>

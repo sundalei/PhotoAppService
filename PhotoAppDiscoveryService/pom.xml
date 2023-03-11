@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.example</groupId>
-		<artifactId>PhotoAppService</artifactId>
+		<artifactId>photoapp-service</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>PhotoAppDiscoveryService</artifactId>
-	<name>PhotoAppDiscoveryService</name>
+	<artifactId>photoapp-discoveryservice</artifactId>
+	<name>photoapp-discoveryservice</name>
 	<description>Demo project for Spring Boot</description>
 	
 	<dependencies>
