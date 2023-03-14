@@ -10,3 +10,5 @@ HELP.md
 *.log
 *.gz
 *.iml
+elastic-info.md
+photo-app.pem
