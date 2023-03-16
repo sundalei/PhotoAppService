@@ -85,7 +85,7 @@ public class WebSecurity extends AbstractHttpConfigurer<WebSecurity, HttpSecurit
 	private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) {
 		AuthenticationFilter authenticationFilter = new AuthenticationFilter(userService, environment,
 				authenticationManager);
-		authenticationFilter.setFilterProcessesUrl(environment.getProperty("login.url.path"));
+		authenticationFilter.setFilterProcessesUrl("/users/login");
 		return authenticationFilter;
 	}
 }
