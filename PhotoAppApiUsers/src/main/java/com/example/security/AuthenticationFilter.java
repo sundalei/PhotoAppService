@@ -2,6 +2,7 @@ package com.example.security;
 
 import java.io.IOException;
 import java.security.Key;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -38,9 +39,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	private final Environment environment;
 
 	public AuthenticationFilter(UsersService usersService, Environment environment, AuthenticationManager authenticationManager) {
+
+		super(authenticationManager);
 		this.usersService = usersService;
 		this.environment = environment;
-		super.setAuthenticationManager(authenticationManager);
 	}
 
 	@Override
@@ -67,10 +69,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		
 		UserDto userDetails = usersService.getUserDetailsByEmail(userName);
 		
+		Instant now = Instant.now();
+		
 		String token = Jwts.builder()
 				.setSubject(userDetails.getUserId())
-				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(environment.getProperty("token.expiration_time"))))
+				.setIssuedAt(Date.from(now))
+				.setExpiration(Date.from(now.plusMillis(Long.parseLong(environment.getProperty("token.expiration_time")))))
 				.signWith(getSignInKey(),SignatureAlgorithm.HS512)
 				.compact();
 		
