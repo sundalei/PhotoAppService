@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,6 +16,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.example.service.UsersService;
 
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class WebSecurity {
 
@@ -50,6 +52,7 @@ public class WebSecurity {
 							.permitAll();
 				});
 
+		http.addFilter(new AuthorizationFilter(authenticationManager, environment));
 		http.addFilter(getAuthenticationFilter(authenticationManager));
 		http.authenticationManager(authenticationManager);
 		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

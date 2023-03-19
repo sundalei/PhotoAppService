@@ -5,6 +5,7 @@ import java.security.Key;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +75,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		String token = Jwts.builder()
 				.setSubject(userDetails.getUserId())
 				.setIssuedAt(Date.from(now))
-				.setExpiration(Date.from(now.plusMillis(Long.parseLong(environment.getProperty("token.expiration_time")))))
+				.setExpiration(Date.from(now.plusMillis(Long.parseLong(Objects.requireNonNull(environment.getProperty("token.expiration_time"))))))
 				.signWith(getSignInKey(),SignatureAlgorithm.HS512)
 				.compact();
 		
